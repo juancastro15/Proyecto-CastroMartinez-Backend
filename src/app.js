@@ -1,6 +1,6 @@
 const express = require('express');
-const productRoutes = require('./routes/products');
-const cartRoutes = require('./routes/carts');
+const productRoutes = require('./routes/productsRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const path = require('path');
 
 const app = express();
