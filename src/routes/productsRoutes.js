@@ -1,6 +1,7 @@
 const express = require('express');
 const ProductManager = require('../dao/ProductManager');
 const router = express.Router();
+const { io } = require('../app'); // Importar la instancia de Socket.IO
 
 const productManager = new ProductManager();
 
@@ -24,6 +25,8 @@ router.get('/:pid', (req, res) => {
 // Agregar nuevo producto
 router.post('/', (req, res) => {
   const newProduct = productManager.addProduct(req.body);
+  // Emitir evento para que todos los clientes actualicen la lista de productos
+  io.emit('updateProducts', productManager.getAll()); // Emitir la lista actualizada
   res.status(201).json(newProduct);
 });
 
@@ -41,6 +44,8 @@ router.put('/:pid', (req, res) => {
 router.delete('/:pid', (req, res) => {
   const deletedProduct = productManager.deleteProduct(parseInt(req.params.pid));
   if (deletedProduct) {
+    // Emitir evento para que todos los clientes actualicen la lista de productos
+    io.emit('updateProducts', productManager.getAll()); // Emitir la lista actualizada
     res.json(deletedProduct);
   } else {
     res.status(404).json({ error: 'Producto no encontrado' });

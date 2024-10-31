@@ -51,4 +51,4 @@ httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
-module.exports = { app, io }; // Exportar también el objeto io si lo necesitas en otro lugar
+module.exports = { app, io };
