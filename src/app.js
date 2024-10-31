@@ -4,13 +4,13 @@ const cartRoutes = require('./routes/cartRoutes');
 const path = require('path');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const exphbs = require('express-handlebars');
+const engine = require('express-handlebars');
 
 const app = express();
 const PORT = 8080;
 
 // Configurar Handlebars
-app.engine('handlebars', exphbs());
+app.engine('handlebars', engine ());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views')); // Asegúrate de que la carpeta views exista
 
