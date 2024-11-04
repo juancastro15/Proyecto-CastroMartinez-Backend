@@ -1,6 +1,5 @@
-const path = require('path');
+import path from 'path';
 
 // Función para obtener la ruta absoluta
-const getDirname = () => path.resolve();
+export const getDirname = () => path.resolve();
 
-module.exports = { getDirname };

@@ -1,10 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { getDirname } = require('../utils');
-
+import fs from 'fs';
+import path from 'path';
+import { getDirname } from '../utils.js';
 const productsFilePath = path.join(getDirname(), 'src', 'data', 'products.json');
 
-class ProductManager {
+export class ProductManager {
   constructor() {
     this.products = [];
     this.loadProducts();
@@ -35,8 +34,18 @@ class ProductManager {
 
   // Agregar nuevo producto
   addProduct(product) {
+    if (!product.title || !product.price || !product.description || !product.thumbnail || !product.code || !product.stock || !product.category) {
+      throw new Error('Faltan campos obligatorios');
+      
+    }
+    const productoFound = this.products.find(p => p.code === product.code);
+    if (productoFound) {
+      throw new Error('El producto ya existe');
+    }
+    const id = this.products.length > 0 ? this.products[this.products.length - 1].id + 1 : 1;
     const newProduct = {
-      id: this.products.length + 1,
+      id: id,
+      price: Number(product.price),
       ...product,
       status: true,
     };
@@ -67,5 +76,3 @@ class ProductManager {
     return null;
   }
 }
-
-module.exports = ProductManager;

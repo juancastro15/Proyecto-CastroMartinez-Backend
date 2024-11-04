@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const { getDirname } = require('../utils');
+import fs from 'fs';
+import path from 'path';
+import { getDirname } from '../utils.js';
 
 const cartsFilePath = path.join(getDirname(), 'src', 'data', 'carts.json');
 
-class CartManager {
+export class CartManager {
   constructor() {
     this.carts = [];
     this.loadCarts();
@@ -52,5 +52,3 @@ class CartManager {
     return null;
   }
 }
-
-module.exports = CartManager;

@@ -1,41 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Productos en Tiempo Real</title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
+<h1>Productos en Tiempo Real</h1>
+<ul id="productList">
+    {{#each products}}
+        
+        <li>{{this.title}} - {{this.price}}</li>
+    {{/each}}
 
-        // Evento para recibir productos actualizados
-        socket.on('updateProducts', (products) => {
-            const productList = document.getElementById('productList');
-            productList.innerHTML = ''; // Limpiar la lista
-            products.forEach(product => {
-                const li = document.createElement('li');
-                li.textContent = `${product.title} - ${product.price}`;
-                productList.appendChild(li);
-            });
-        });
+</ul>
 
-        // Enviar nuevo producto
-        function addProduct(e) {
-            e.preventDefault();
-            const title = document.getElementById('title').value;
-            const price = document.getElementById('price').value;
-            socket.emit('addProduct', { title, price });
-            document.getElementById('productForm').reset();
-        }
-    </script>
-</head>
-<body>
-    <h1>Productos en Tiempo Real</h1>
-    <ul id="productList"></ul>
-    
-    <form id="productForm" onsubmit="addProduct(event)">
-        <input type="text" id="title" placeholder="Título" required>
-        <input type="number" id="price" placeholder="Precio" required>
-        <button type="submit">Agregar Producto</button>
-    </form>
-</body>
-</html>
+<form id="productForm">
+    <input type="text" id="title" placeholder="Título" required>
+    <input type="number" id="price" placeholder="Precio" required>
+    <input type="text" id="thumbnail" placeholder="Imagen" required>
+    <input type="text" id="code" placeholder="code"  required>
+    <input type="text" placeholder="description" id="description" required>
+    <input type="number" id="stock" placeholder="stock" required>
+    <input type="text" id="category" placeholder="category" required>
+    <button type="submit">Agregar Producto</button>
+    <a href="/">Vamos al home</a>
+</form>
+<form id="deleteForm">
+    <input type="text" id="id" placeholder="ID" required>
+    <button type="submit">Eliminar Producto</button>
+</form>
+<script src="/socket.io/socket.io.js"></script>
+<script src="./js/index.js"></script> 
