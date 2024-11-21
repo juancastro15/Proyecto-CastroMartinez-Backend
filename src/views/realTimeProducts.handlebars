@@ -1,26 +1,55 @@
 <h1>Productos en Tiempo Real</h1>
 <ul id="productList">
-    {{#each products}}
-        
-        <li>{{this.title}} - {{this.price}}</li>
-    {{/each}}
-
+  {{#each products}}
+    <li>{{this.title}} - {{this.price}}</li>
+  {{/each}}
 </ul>
 
 <form id="productForm">
-    <input type="text" id="title" placeholder="Título" required>
-    <input type="number" id="price" placeholder="Precio" required>
-    <input type="text" id="thumbnail" placeholder="Imagen" required>
-    <input type="text" id="code" placeholder="code"  required>
-    <input type="text" placeholder="description" id="description" required>
-    <input type="number" id="stock" placeholder="stock" required>
-    <input type="text" id="category" placeholder="category" required>
-    <button type="submit">Agregar Producto</button>
-    <a href="/">Vamos al home</a>
+  <input type="text" id="title" placeholder="Título" required />
+  <input type="number" id="price" placeholder="Precio" required />
+  <input type="text" id="thumbnail" placeholder="Imagen" required />
+  <input type="text" id="code" placeholder="Código" required />
+  <input type="text" placeholder="Descripción" id="description" required />
+  <input type="number" id="stock" placeholder="Stock" required />
+  <input type="text" id="category" placeholder="Categoría" required />
+  <button type="submit">Agregar Producto</button>
+  <a href="/">Volver al Home</a>
 </form>
+
 <form id="deleteForm">
-    <input type="text" id="id" placeholder="ID" required>
-    <button type="submit">Eliminar Producto</button>
+  <input
+    type="text"
+    id="id"
+    placeholder="ID del producto a eliminar"
+    required
+  />
+  <button type="submit">Eliminar Producto</button>
 </form>
+
 <script src="/socket.io/socket.io.js"></script>
-<script src="./js/index.js"></script> 
+<script>
+  const productForm = document.getElementById('productForm'); const deleteForm =
+  document.getElementById('deleteForm'); const productList =
+  document.getElementById('productList'); // Función para obtener los productos
+  y actualizarlos en la lista const fetchProducts = async () => { const res =
+  await fetch('/api/products'); const products = await res.json();
+  productList.innerHTML = products.map(product => `<li>${product.title} -
+  ${product.price}</li>`).join(''); }; // Obtener productos al cargar la página
+  fetchProducts(); // Agregar un producto productForm.addEventListener('submit',
+  async (e) => { e.preventDefault(); const newProduct = { title:
+  document.getElementById('title').value, price:
+  document.getElementById('price').value, thumbnail:
+  document.getElementById('thumbnail').value, code:
+  document.getElementById('code').value, description:
+  document.getElementById('description').value, stock:
+  document.getElementById('stock').value, category:
+  document.getElementById('category').value }; const res = await
+  fetch('/api/products', { method: 'POST', headers: { 'Content-Type':
+  'application/json' }, body: JSON.stringify(newProduct) }); if (res.ok) {
+  fetchProducts(); // Refrescar la lista de productos } }); // Eliminar un
+  producto deleteForm.addEventListener('submit', async (e) => {
+  e.preventDefault(); const productId = document.getElementById('id').value;
+  const res = await fetch(`/api/products/${productId}`, { method: 'DELETE' });
+  if (res.ok) { fetchProducts(); // Refrescar la lista de productos } });
+</script>
