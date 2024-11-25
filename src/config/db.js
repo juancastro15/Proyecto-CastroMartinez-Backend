@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import { MONGO_URI } from "../../.env";
 
 dotenv.config(); // Cargar las variables de entorno del archivo .env
 

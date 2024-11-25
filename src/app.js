@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import productRoutes from "./routes/productsRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import home from "./routes/home.js";
+import { engine } from "express-handlebars";
 
 dotenv.config();
 
@@ -14,10 +16,17 @@ connectDB();
 
 // Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Configuracion de Handlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
 // Rutas
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);
+app.use("/", home);
 
 const PORT = process.env.PORT || 8080;
 
