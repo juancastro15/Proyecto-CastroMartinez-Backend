@@ -1,28 +1,29 @@
-import Product from "../../models/product.js";
+import mongoose from "mongoose";
+import Product from "../models/ProductModel.js"; // Supongamos que tienes este modelo definido
 
 export class ProductMongoManager {
-  // Obtener todos los productos
-  async getAll(limit) {
-    return await Product.find().limit(limit);
+  // Obtener productos con filtros, paginación y orden
+  async getAll({ limit, page, sort, query }) {
+    const options = {
+      limit,
+      page,
+      sort,
+    };
+    return await Product.paginate(query, options); // Usamos mongoose-paginate-v2 para este ejemplo
   }
 
-  // Obtener un producto por su ID
   async getById(id) {
     return await Product.findById(id);
   }
 
-  // Crear un nuevo producto
   async addProduct(productData) {
-    const newProduct = new Product(productData);
-    return await newProduct.save();
+    return await Product.create(productData);
   }
 
-  // Actualizar un producto
-  async updateProduct(id, productData) {
-    return await Product.findByIdAndUpdate(id, productData, { new: true });
+  async updateProduct(id, updates) {
+    return await Product.findByIdAndUpdate(id, updates, { new: true });
   }
 
-  // Eliminar un producto
   async deleteProduct(id) {
     return await Product.findByIdAndDelete(id);
   }
