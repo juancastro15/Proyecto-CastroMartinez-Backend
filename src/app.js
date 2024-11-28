@@ -26,7 +26,7 @@ app.set("views", "./src/views");
 // Rutas
 app.use("/api/products", productRoutes);
 app.use("/api/carts", cartRoutes);
-app.use("/", home);
+app.use("/products", home);
 
 const PORT = process.env.PORT || 8080;
 

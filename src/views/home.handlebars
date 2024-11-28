@@ -1,22 +1,19 @@
-<h1>Lista de Productos</h1>
+<h1>{{title}}</h1>
 <ul id="productList">
   {{#each products}}
-    <li>
-      title:
-      {{this.title}}
-      - price:
-      {{this.price}}
-      - code:
-      {{this.code}}
-      - description:
-      {{this.description}}
-      - stock:
-      {{this.stock}}
-      - category:
-      {{this.category}}
-      - status:
-      {{this.status}}
-    </li>
+    <div>
+      <li>{{_id}}</li>
+      <li>{{title}}</li>
+      <li>{{price}}</li>
+      <li>{{thumbnail}}</li>
+      <li>{{code}}</li>
+      <li>{{description}}</li>
+      <li>{{stock}}</li>
+      <li>{{category}}</li>
+      <li>{{status}}</li>
+    </div>
+  {{else}}
+    <li>No hay productos</li>
   {{/each}}
 </ul>
 

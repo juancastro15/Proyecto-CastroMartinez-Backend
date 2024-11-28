@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 import { MONGO_URI } from "../../.env";
-
-dotenv.config(); // Cargar las variables de entorno del archivo .env
-
-const MONGO_URI = process.env.MONGO_URI;
-
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI, {

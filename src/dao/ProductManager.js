@@ -1,7 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-import { getDirname } from '../utils.js';
-const productsFilePath = path.join(getDirname(), 'src', 'data', 'products.json');
+import fs from "fs";
+import path from "path";
+import { getDirname } from "../utils.js";
+const productsFilePath = path.join(
+  getDirname(),
+  "src",
+  "data",
+  "products.json"
+);
 
 export class ProductManager {
   constructor() {
@@ -12,7 +17,7 @@ export class ProductManager {
   // Cargar productos desde el archivo
   loadProducts() {
     if (fs.existsSync(productsFilePath)) {
-      const data = fs.readFileSync(productsFilePath, 'utf-8');
+      const data = fs.readFileSync(productsFilePath, "utf-8");
       this.products = JSON.parse(data);
     }
   }
@@ -29,20 +34,30 @@ export class ProductManager {
 
   // Obtener producto por ID
   getById(id) {
-    return this.products.find(product => product.id === id);
+    return this.products.find((product) => product.id === id);
   }
 
   // Agregar nuevo producto
   addProduct(product) {
-    if (!product.title || !product.price || !product.description || !product.thumbnail || !product.code || !product.stock || !product.category) {
-      throw new Error('Faltan campos obligatorios');
-      
+    if (
+      !product.title ||
+      !product.price ||
+      !product.description ||
+      !product.thumbnail ||
+      !product.code ||
+      !product.stock ||
+      !product.category
+    ) {
+      throw new Error("Faltan campos obligatorios");
     }
-    const productoFound = this.products.find(p => p.code === product.code);
+    const productoFound = this.products.find((p) => p.code === product.code);
     if (productoFound) {
-      throw new Error('El producto ya existe');
+      throw new Error("El producto ya existe");
     }
-    const id = this.products.length > 0 ? this.products[this.products.length - 1].id + 1 : 1;
+    const id =
+      this.products.length > 0
+        ? this.products[this.products.length - 1].id + 1
+        : 1;
     const newProduct = {
       id: id,
       price: Number(product.price),
@@ -56,9 +71,12 @@ export class ProductManager {
 
   // Actualizar producto por ID
   updateProduct(id, updates) {
-    const productIndex = this.products.findIndex(p => p.id === id);
+    const productIndex = this.products.findIndex((p) => p.id === id);
     if (productIndex !== -1) {
-      this.products[productIndex] = { ...this.products[productIndex], ...updates };
+      this.products[productIndex] = {
+        ...this.products[productIndex],
+        ...updates,
+      };
       this.saveProducts();
       return this.products[productIndex];
     }
@@ -67,7 +85,7 @@ export class ProductManager {
 
   // Eliminar producto por ID
   deleteProduct(id) {
-    const productIndex = this.products.findIndex(p => p.id === id);
+    const productIndex = this.products.findIndex((p) => p.id === id);
     if (productIndex !== -1) {
       const deletedProduct = this.products.splice(productIndex, 1);
       this.saveProducts();

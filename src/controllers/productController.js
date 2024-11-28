@@ -4,12 +4,12 @@ const productManager = new ProductMongoManager();
 
 export const getAllProducts = async (req, res) => {
   try {
-    const { limit = 10, page = 1, sort, query } = req.query;
+    const { limit = 10, page = 1, sort = "asc", query } = req.query;
 
     const options = {
       limit: parseInt(limit),
       page: parseInt(page),
-      sort: sort ? { [sort]: 1 } : undefined, // sort puede ser ascendente (1) o descendente (-1)
+      sort: sort === "asc" ? { price: 1 } : { price: -1 },
       query: query ? JSON.parse(query) : {}, // query debe ser un objeto JSON
     };
 
@@ -22,7 +22,34 @@ export const getAllProducts = async (req, res) => {
 
 export const addsProduct = async (req, res) => {
   try {
-    const newProduct = await productManager.addProduct(req.body);
+    const {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+      category,
+      status,
+    } = req.body;
+    const existingProduct = await productManager.getAll({ query: { code } });
+
+    if (existingProduct.payload.length > 0) {
+      return res
+        .status(400)
+        .json({ error: "El código del producto ya existe" });
+    }
+    const productNew = {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+      category,
+      status,
+    };
+    const newProduct = await productManager.addProduct(productNew);
     res.status(201).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: "Error al agregar el producto" });
